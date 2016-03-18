@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
-  before_action authenticate_user!
-  before_action do
-    redirect_to :authenticated_root, notice: "Forbidden" unless current_user.admin?
-  end
+  before_action :authenticate_user!
+  before_action :require_admin, except: [:dashboard]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+
+  def dashboard
+  end
 
   def index
     @users = User.all
@@ -54,6 +55,10 @@ class UsersController < ApplicationController
   end
 
   private
+    def require_admin
+      redirect_to :authenticated_root, notice: "Forbidden" unless current_user.admin?
+    end
+
     def set_user
       @user = User.find(params[:id])
     end
