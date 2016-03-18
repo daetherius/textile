@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 
   private
     def require_admin
-      redirect_to :authenticated_root, notice: "Forbidden" unless current_user.admin?
+      redirect_to :dashboard, notice: "Forbidden" unless current_user.admin?
     end
 
     def set_user

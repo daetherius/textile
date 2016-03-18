@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     authenticated :user do
-      root 'users#dashboard', as: :authenticated_root
+      root 'users#dashboard', as: :dashboard
       get '/logout' => 'devise/sessions#destroy'
     end
 
