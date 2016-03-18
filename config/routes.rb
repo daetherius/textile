@@ -1,5 +1,22 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users,
+    path: '',
+    path_names: { sign_in: "login", sign_out: "logout" },
+    controllers: { registrations: 'users/registrations' }
+
+  devise_scope :user do
+    authenticated :user do
+      root 'users#dashboard', as: :authenticated_root
+      get '/logout' => 'devise/sessions#destroy'
+    end
+
+    unauthenticated do
+      root 'devise/sessions#new'
+    end
+  end
+
+  resources :users
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
