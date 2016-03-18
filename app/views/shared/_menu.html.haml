@@ -1,5 +1,10 @@
 %nav
   %ul
-    %li= link_to 'List Users', users_path
-    %li= link_to 'New User', new_user_path
+    - if current_user.try(:admin?)
+      %li= link_to 'List Users', users_path
+      %li= link_to 'New User', new_user_path
+    - if user_signed_in?
+      %li= link_to 'Edit profile', edit_user_registration_path
+      %li= link_to 'Logout', logout_path, method: :delete
+
 

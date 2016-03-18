@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     # Custom registration
     get "/cancel" => "users/registrations#cancel", as: 'cancel_user_registration'
     get "/edit" => "users/registrations#edit", as: 'edit_user_registration'
-    put "/" => "users/registrations#update"
+    put "/" => "users/registrations#update", as: 'update_user_registration'
     patch "/" => "users/registrations#update"
   end
 
