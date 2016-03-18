@@ -22,9 +22,14 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    generated_password = Devise.friendly_token.first(8)
+
+    @user.password = @user.password_confirmation = generated_password
 
     respond_to do |format|
       if @user.save
+        reset_password_token = @user.send_reset_password_instructions(true)
+        @user.send_confirmation_instructions(generated_password, reset_password_token)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -64,6 +69,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :date_of_birth, :admin)
+      params.require(:user).permit(:first_name, :last_name, :email, :date_of_birth, :admin)
     end
 end

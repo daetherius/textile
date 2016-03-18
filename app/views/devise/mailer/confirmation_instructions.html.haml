@@ -1,0 +1,11 @@
+%p
+  Welcome #{@email}!
+%p This is your temporary password:
+%pre= @temporary_password
+%p
+  That password will only work
+  %strong after
+  you have confirmed your account through the link below:
+%p= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token)
+%p Once confirmed, you can change your password here:
+%p= link_to 'Change my password', edit_password_url(@resource, reset_password_token: @reset_password_token)
