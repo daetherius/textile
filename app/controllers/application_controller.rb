@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     # TODO update to users#dashboard
-    current_user.admin? ? users_path : edit_user_registration_path
+    current_user.admin? ? users_path : dashboard_path
   end
 
 end

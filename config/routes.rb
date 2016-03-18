@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users,
     path: '',
     path_names: { sign_in: "login", sign_out: "logout" },
-    controllers: { registrations: 'users/registrations' }
+    controllers: { registrations: 'users/registrations' },
+    skip: 'registrations'
 
   devise_scope :user do
     authenticated :user do
@@ -13,7 +14,14 @@ Rails.application.routes.draw do
     unauthenticated do
       root 'devise/sessions#new'
     end
+
+    # Custom registration
+    get "/cancel" => "users/registrations#cancel", as: 'cancel_user_registration'
+    get "/edit" => "users/registrations#edit", as: 'edit_user_registration'
+    put "/" => "users/registrations#update"
+    patch "/" => "users/registrations#update"
   end
+
 
   resources :users
 
