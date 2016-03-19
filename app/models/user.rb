@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true
   has_many :checks
 
+  def has_checked_today?
+    checks.for_today.any?
+  end
 
   def send_reset_password_instructions(generate_token_only = false)
     token = set_reset_password_token
