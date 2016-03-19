@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  BARCODE_SUFFIX_LENGTH = 6
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
@@ -6,30 +7,37 @@ class User < ActiveRecord::Base
 
   validates :password, confirmation: true
   has_many :checks
+  after_save :set_barcode, on: :create
 
   def has_checked_today?
     checks.for_today.any?
   end
 
-  def send_reset_password_instructions(generate_token_only = false)
-    token = set_reset_password_token
-    send_reset_password_instructions_notification(token) unless generate_token_only
-
-    token
+  def set_barcode
+    barcode = "%06d%0#{BARCODE_SUFFIX_LENGTH}d" % [id, rand(10**BARCODE_SUFFIX_LENGTH)]
+    update_column(:barcode, barcode)
   end
 
-  def send_on_create_confirmation_instructions
-    # Nope, i'll send this manually
-  end
+  ## DeviseMailer overrides
+    def send_reset_password_instructions(generate_token_only = false)
+      token = set_reset_password_token
+      send_reset_password_instructions_notification(token) unless generate_token_only
 
-  def send_confirmation_instructions(temporary_password, reset_password_token)
-    unless @raw_confirmation_token
-      generate_confirmation_token!
+      token
     end
 
-    opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
-    opts[:temporary_password] = temporary_password
-    opts[:reset_password_token] = reset_password_token
-    send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
-  end
+    def send_on_create_confirmation_instructions
+      # Nope, i'll send this manually
+    end
+
+    def send_confirmation_instructions(temporary_password, reset_password_token)
+      unless @raw_confirmation_token
+        generate_confirmation_token!
+      end
+
+      opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+      opts[:temporary_password] = temporary_password
+      opts[:reset_password_token] = reset_password_token
+      send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
+    end
 end
