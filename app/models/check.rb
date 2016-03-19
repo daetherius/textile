@@ -4,7 +4,7 @@ class Check < ActiveRecord::Base
   belongs_to :user
   enum context: [ :checkin, :checkout ]
 
-  scope :for_today, -> { where(["created_at > ?", Time.current.utc.beginning_of_day]) }
+  scope :for_today, -> { where(["created_at > ?", Time.current.in_time_zone.beginning_of_day]) }
 
   before_validation :set_check_context, on: :create
 
