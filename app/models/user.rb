@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   validates :password, confirmation: true
+  has_many :checks
+
 
   def send_reset_password_instructions(generate_token_only = false)
     token = set_reset_password_token
