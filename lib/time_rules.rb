@@ -1,6 +1,6 @@
 module TimeRules
   CHECKIN_LIMIT_TIME = 9.25  # 9:15 am
-  CHECKOUT_FROM_TIME = 17    # 5:00 pm
+  CHECKOUT_FROM_TIME = 18    # 6:00 pm
 
   def current_time
     Time.current.in_time_zone.seconds_since_midnight/3600
