@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
       # Nope, i'll send this manually
     end
 
-    def send_confirmation_instructions(temporary_password, reset_password_token)
+    def send_confirmation_instructions(temporary_password = false, reset_password_token = false)
       unless @raw_confirmation_token
         generate_confirmation_token!
       end
