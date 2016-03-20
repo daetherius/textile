@@ -5,7 +5,12 @@ class UsersController < ApplicationController
 
   respond_to :json, only: [:check]
 
+  def reports
+
+  end
+
   def dashboard
+    @checks = current_user.checks
   end
 
   def check
