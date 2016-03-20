@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   end
 
 
-  post "/check" => "users#check", format: :json
+  post "/check" => "users#check", format: true, constraints: { format: 'json' }
 
   resources :users
 
