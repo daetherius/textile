@@ -12,12 +12,16 @@ class UsersController < ApplicationController
     @user = User.find_by(barcode: params[:barcode])
 
     if @user
-      @user.checks.create()
-      render :nothing => true, :status => :created and return
+      new_check = @user.checks.new
+
+      if new_check.save
+        render json_with_status :created and return
+      else
+        render json_with_status(:unprocessable_entity, new_check.errors.full_messages.first) and return
+      end
     end
 
-    render json: { error: "User not found",
-                  status: 400 }, status: :bad_request
+    render json_with_status :unprocessable_entity, "User not found"
   end
 
   def index

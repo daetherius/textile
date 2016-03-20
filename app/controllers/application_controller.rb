@@ -13,4 +13,17 @@ class ApplicationController < ActionController::Base
   def json_request?
     request.format.json?
   end
+
+  def json_with_status(status = :ok, message = nil)
+    response = {}
+    status_code = Rack::Utils::status_code status
+
+    if message.blank?
+      response = {nothing: true, status: status}
+    else
+      response = {json: { error: message, status: status_code }, status: status}
+    end
+
+    response
+  end
 end
