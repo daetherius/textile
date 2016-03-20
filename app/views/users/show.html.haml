@@ -1,6 +1,13 @@
 .row
   .col-md-6
-    %table.table
+    %nav.nav-bar
+      %ul.nav.navbar-nav
+        %li= back_link_to users_path
+        %li= link_to 'Edit', edit_user_path(@user)
+.row
+  .col-md-5.col-md-push-1
+    %h2 User ##{@user.id}
+    %table.table.table-responsive
       %tbody
         %tr
           %th First name
@@ -15,16 +22,8 @@
           %th Date of birth:
           %td= @user.date_of_birth
         %tr
-          %th Admin:
-          %td= @user.admin
-        %tr
-          %th Admin:
-          %td= @user.admin
+          %td.text-center{colspan: 2}
+            = @user.barcode_data.html_safe
+            %p= @user.barcode
 
-  .col-md-6
 
-.row
-  %nav.nav-bar
-    %ul.nav.navbar-nav
-      %li= link_to 'Edit', edit_user_path(@user)
-      %li= link_to 'Back', users_path

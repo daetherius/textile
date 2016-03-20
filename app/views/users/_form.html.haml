@@ -7,37 +7,35 @@
           %li= msg
 
   %h3 Basic Info
-  .field
+  .form-group
     = f.label :first_name
-    %br/
-    = f.text_field :first_name
-  .field
+    = f.text_field :first_name, class: 'form-control'
+  .form-group
     = f.label :last_name
-    %br/
-    = f.text_field :last_name
-  .field
+    = f.text_field :last_name, class: 'form-control'
+  .form-group
     = f.label :date_of_birth
-    %br/
-    = f.date_select :date_of_birth, start_year: Date.today.year - 80, end_year: Date.today.year - 16
+    = f.date_select :date_of_birth, start_year: Date.today.year - 80, end_year: Date.today.year - 16, class: 'form-control'
 
   %hr/
 
   %h3 Account Settings
-  .field
+  .form-group
     = f.label :email
-    %br/
-    = f.text_field :email
-  - unless @user.new_record?
-    .field
+    = f.text_field :email, class: 'form-control'
+  - if @user.new_record?
+    %p.alert.alert-info A temporary password will be auto-generated and emailed to this user.
+  - else
+    .form-group
       = f.label :password
-      %br/
-      = f.password_field :password
-    .field
+      = f.password_field :password, class: 'form-control'
+    .form-group
       = f.label :password_confirmation
-      %br/
-      = f.password_field :password_confirmation
-  .field
-    = f.label :admin
-    = f.check_box :admin
-  .actions
-    = f.submit 'Save'
+      = f.password_field :password_confirmation, class: 'form-control'
+  .form-group
+    .checkbox
+      = f.label :admin do
+        = f.check_box :admin
+        Admin role
+  .form-group.actions
+    = f.submit 'Save', class: 'btn btn-primary'

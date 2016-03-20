@@ -1,7 +1,12 @@
-%h1 Editing user
+.row
+  .col-md-6
+    %nav.nav-bar
+      %ul.nav.navbar-nav
+        %li= back_link_to users_path
+        %li= link_to 'Show', @user
 
-= render 'form'
+.row
+  .col-md-5.col-md-push-1
+    %h1 Editing user ##{@user.id}
 
-= link_to 'Show', @user
-\|
-= link_to 'Back', users_path
+    = render 'form'

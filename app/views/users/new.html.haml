@@ -1,5 +1,11 @@
-%h1 New user
+.row
+  .col-md-6
+    %nav.nav-bar
+      %ul.nav.navbar-nav
+        %li= back_link_to users_path
 
-= render 'form'
+.row
+  .col-md-6.col-md-push-1
+    %h1 New user
 
-= link_to 'Back', users_path
+    = render 'form'
