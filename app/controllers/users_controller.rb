@@ -1,9 +1,23 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :require_admin, except: [:dashboard]
+  before_action :authenticate_user!, except: [:check]
+  before_action :require_admin, except: [:dashboard, :check]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  respond_to :json, only: [:check]
+
   def dashboard
+  end
+
+  def check
+    @user = User.find_by(barcode: params[:barcode])
+
+    if @user
+      @user.checks.create()
+      render :nothing => true, :status => :created and return
+    end
+
+    render json: { error: "User not found",
+                  status: 400 }, status: :bad_request
   end
 
   def index
