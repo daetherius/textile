@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :email
   validates :password, confirmation: true
   has_many :checks
-  after_save :set_barcode, on: :create
+  after_save :set_barcode, if: "barcode.nil?"
 
   has_barcode :barcode,
               :outputter => :svg,
