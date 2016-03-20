@@ -9,8 +9,16 @@ class User < ActiveRecord::Base
   has_many :checks
   after_save :set_barcode, on: :create
 
-  def has_checked_today?
-    checks.for_today.any?
+  def has_checked_today?(*check_types)
+    checks.for_today.where(context: Check.values_for(*check_types)).any?
+  end
+
+  def has_checked_in_today?
+    has_checked_today?(:checkin, :delayed)
+  end
+
+  def has_checked_out_today?
+    has_checked_today?(:checkout, :early)
   end
 
   def set_barcode
