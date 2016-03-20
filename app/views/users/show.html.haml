@@ -1,27 +1,30 @@
-%p#notice= notice
+.row
+  .col-md-6
+    %table.table
+      %tbody
+        %tr
+          %th First name
+          %td= @user.first_name
+        %tr
+          %th Last name:
+          %td= @user.last_name
+        %tr
+          %th Email:
+          %td= @user.email
+        %tr
+          %th Date of birth:
+          %td= @user.date_of_birth
+        %tr
+          %th Admin:
+          %td= @user.admin
+        %tr
+          %th Admin:
+          %td= @user.admin
 
-%p
-  %b First name:
-  = @user.first_name
-%p
-  %b Last name:
-  = @user.last_name
-%p
-  %b Email:
-  = @user.email
-%p
-  %b Password:
-  = @user.password
-%p
-  %b Date of birth:
-  = @user.date_of_birth
-%p
-  %b Admin:
-  = @user.admin
-%p
-  %b Password confirmation:
-  = @user.password_confirmation
+  .col-md-6
 
-= link_to 'Edit', edit_user_path(@user)
-\|
-= link_to 'Back', users_path
+.row
+  %nav.nav-bar
+    %ul.nav.navbar-nav
+      %li= link_to 'Edit', edit_user_path(@user)
+      %li= link_to 'Back', users_path

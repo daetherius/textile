@@ -6,10 +6,9 @@
       %th First name
       %th Last name
       %th Email
-      %th Password
-      %th Date of birth
-      %th Admin
-      %th Password confirmation
+      %th.text-center Date of birth
+      %th.text-center Confirmed
+      %th.text-center Admin
       %th
       %th
       %th
@@ -20,10 +19,12 @@
         %td= user.first_name
         %td= user.last_name
         %td= user.email
-        %td= user.password
-        %td= user.date_of_birth
-        %td= user.admin
-        %td= user.password_confirmation
+        %td.text-center= user.date_of_birth
+        %td.text-center
+          %i.glyphicon{ class: "glyphicon glyphicon-#{user.confirmed? ? 'ok' : 'remove'}" }
+        %td.text-center
+          - if user.admin?
+            %i.glyphicon.glyphicon-ok
         %td= link_to 'Show', user
         %td= link_to 'Edit', edit_user_path(user)
         %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
