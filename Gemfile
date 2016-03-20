@@ -22,4 +22,5 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'better_errors'
   gem 'pry-byebug'
+  gem 'faker'
 end

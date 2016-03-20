@@ -3,7 +3,8 @@ module TimeRules
   CHECKOUT_FROM_TIME = 18    # 6:00 pm
 
   def current_time
-    Time.current.in_time_zone.seconds_since_midnight/3600
+    base_time = self.created_at || Time.current.in_time_zone
+    base_time.seconds_since_midnight/3600
   end
 
   def is_checkin_time?
