@@ -93,20 +93,19 @@ class UsersController < ApplicationController
             filter_query = filter_query.where(["checks.context IN (?)", Check.values_for(*query_check_types)])
 
             if @query['check_types'] == 'missed' # Tricky stuff
-              comparison = false
+              # Users that have 1 check per day
+              users_with_no_missed_days = filter_query.having(["count(checks.id) > ?", days_between_dates - 1])
 
               case @query["with"]
-                when "gt_0"
-                  comparison = '<=' # <= "1 missed day or more"
-                when "gt_1"
-                  comparison = '<' # "More than 1 missed day"
-                when "none"
-                  comparison = '>' # "Checked all days"
-              end
 
-              if comparison
-                # We use days_between_dates-1 as pivot to compare
-                @users = filter_query.having(["count(checks.id) #{comparison} ?", days_between_dates - 1])
+                when "gt_0"
+                  @users = User.where.not(id: users_with_no_missed_days)
+                when "gt_1"
+                  users_with_no_checks = User.includes(:checks).where( :checks => { :id => nil } )
+                  users_with_more_than_one_missed = filter_query.having(["count(checks.id) < ?", days_between_dates - 1])
+                  @users = User.where(id: users_with_no_checks.pluck(:id) + users_with_more_than_one_missed.pluck(:id))
+                when "none"
+                  @users = users_with_no_missed_days
               end
 
             else # Other than missed
