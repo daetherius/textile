@@ -26,4 +26,8 @@ class ApplicationController < ActionController::Base
 
     response
   end
+
+  def is_review_day?
+    Time.current.in_time_zone.day == TimeRules::REVIEW_DAY
+  end
 end

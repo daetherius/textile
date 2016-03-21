@@ -10,20 +10,21 @@
   .col-md-9.col-md-push-1
     %h1 #{@user.full_name} history
 
-    %table.table.history-table
-      %thead
-        %tr
-          %th Month
-          %th Day
-          %th Arrival
-          %th Departure
-
-      %tbody
-        - check_printer(@checks, @period).each do |day_key, row|
+    - if @checks
+      %table.table.history-table
+        %thead
           %tr
-            - if row[:month].present?
-              %td{row[:month][:atts]}= row[:month][:content]
-            %td{row[:day][:atts]}= row[:day][:content]
-            %td{row[:arrival][:atts]}= row[:arrival][:content]
-            %td{row[:departure][:atts]}= row[:departure][:content]
+            %th Month
+            %th Day
+            %th Arrival
+            %th Departure
+
+        %tbody
+          - check_printer(@checks, @period).each do |day_key, row|
+            %tr
+              - if row[:month].present?
+                %td{row[:month][:atts]}= row[:month][:content]
+              %td{row[:day][:atts]}= row[:day][:content]
+              %td{row[:arrival][:atts]}= row[:arrival][:content]
+              %td{row[:departure][:atts]}= row[:departure][:content]
 
