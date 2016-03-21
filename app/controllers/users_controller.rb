@@ -179,7 +179,7 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
-      if @user.update_without_password(user_params)
+      if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -207,6 +207,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :date_of_birth, :admin)
+      params.require(:user).permit(:first_name, :last_name, :email, :date_of_birth, :admin, :password, :password_confirmation)
     end
 end
