@@ -59,17 +59,95 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    @query = {}
+
+    if params["q"].present?
+      @query = params["q"].reject{|k,v| v.blank? }
+
+      if @query.present?
+        if @query["barcode"]
+          @users = @users.where(barcode: @query["barcode"])
+        else
+          # Having checks conditions
+          if @query["with"] && @query["check_types"]
+            filter_query = @users.joins(:checks).group("users.id") # Don't pollute original query
+
+            # Date conditions with defaults to 1 Month in the past
+            now = Time.current.in_time_zone
+            @query["date_from"] = (@query["date_from"] || now.ago(1.month)).to_date
+            @query["date_to"] = (@query["date_to"] || now).to_date
+            days_between_dates = ((@query["date_to"] - @query["date_from"])/86400).to_i
+
+            filter_query = filter_query.where(["checks.created_at >= ?", @query["date_from"].beginning_of_day])
+                                   .where(["checks.created_at <= ?", @query["date_to"].end_of_day])
+
+            # Parse special check types values
+            query_check_types = @query["check_types"]
+
+            case @query["check_types"]
+              when "missed", "attendance"
+                query_check_types = ["checkin", "delayed"]
+            end
+
+            # Check type conditions
+            filter_query = filter_query.where(["checks.context IN (?)", Check.values_for(*query_check_types)])
+
+            if @query['check_types'] == 'missed' # Tricky stuff
+              comparison = false
+
+              case @query["with"]
+                when "gt_0"
+                  comparison = '<=' # <= "1 missed day or more"
+                when "gt_1"
+                  comparison = '<' # "More than 1 missed day"
+                when "none"
+                  comparison = '>' # "Checked all days"
+              end
+
+              if comparison
+                # We use days_between_dates-1 as pivot to compare
+                @users = User.where.not(
+                  id: filter_query.having(["count(checks.id) #{comparison} ?", days_between_dates - 1])
+                )
+              end
+
+            else # Other than missed
+
+              case @query["with"]
+                when "gt_0"
+                  @users = filter_query
+
+                when "gt_1"
+                  @users = filter_query.having("count(checks.id) > 1")
+
+                when "none"
+                  @users = User.where.not(id: filter_query)
+              end
+            end
+          else # missing params to apply filters; reset
+            @check_types_notice = "Check types not selected" if @query["with"].present?
+            @comparison_criteria_notice = "Comparison critera not selected" if @query["check_types"].present?
+
+            @query = {} unless @check_types_notice || @comparison_criteria_notice
+          end
+        end
+      end
+    end
+
     @filter_with_options = [
+      ["–",""],
       ["At least one","gt_0"],
       ["More than one","gt_1"],
       ["None", "none"],
     ]
     @filter_check_types_options = [
+      ["–",""],
+      ["Check-in (on time)", "checkin"],
       ["Delayed arrival","delayed"],
+      ["Check-out (on time)", "checkout"],
       ["Early departure", "early"],
+      ["Attendance", "attendance"],
       ["Missed day", "missed"],
-      ["Check-in", "checkin"],
-      ["Check-out", "checkout"],
     ]
   end
 

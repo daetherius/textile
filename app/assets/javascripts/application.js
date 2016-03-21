@@ -19,6 +19,9 @@
 
 $(function() {
   $( ".date-picker" ).datepicker({
+    dateFormat: 'yy-mm-dd'
     // beforeShowDay: $.datepicker.noWeekends
   });
+
+  $('[data-toggle="tooltip"]').tooltip();
 });

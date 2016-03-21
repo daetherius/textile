@@ -12,37 +12,42 @@
     .panel.panel-default
       .panel-body
         %p.lead Filter by
-        = form_tag({}, {class: ''}) do
+        = form_tag({}, {class: '', method: :get}) do
           .row
             .col-md-2
               .form-group
-                = label_tag :barcode, "Barcode"
-                = text_field_tag :barcode, '', class: 'form-control'
+                = label_tag 'q[barcode]' do
+                  Barcode
+                  %i.glyphicon.glyphicon-info-sign{'data-toggle': "tooltip", 'data-placement': "top", title: "Using this field will ignore all other conditions"}
+                = text_field_tag 'q[barcode]', @query["barcode"], class: 'form-control'
+
             .col-md-1.or-cell
               ="- or -"
             .col-md-5
               .row
                 .col-md-12
-                  = label_tag :with, "With"
+                  = label_tag 'q[with]', "With"
               .row
                 .col-md-6
-                  .form-group
-                    = select_tag :with, options_for_select(@filter_with_options), class: 'form-control'
+                  .form-group{ class: @comparison_criteria_notice && 'has-error' }
+                    = select_tag 'q[with]', options_for_select(@filter_with_options, @query['with']), class: 'form-control'
+                    %span.help-block= @comparison_criteria_notice
                 .col-md-6
-                  .form-group
-                    = select_tag :check_type, options_for_select(@filter_check_types_options), class: 'form-control'
+                  .form-group{ class: @check_types_notice && 'has-error' }
+                    = select_tag 'q[check_types]', options_for_select(@filter_check_types_options, @query['check_types']), class: 'form-control'
+                    %span.help-block= @check_types_notice
 
             .col-md-4
               .row
                 .col-md-12
-                  = label_tag :date_from, "Between dates"
+                  = label_tag 'q[date_from]', "Between dates"
               .row
                 .col-md-6
                   .form-group
-                    = text_field_tag :date_from, '', placeholder: 'From', class: 'form-control date-picker'
+                    = text_field_tag 'q[date_from]', @query['date_from'], placeholder: 'From', class: 'form-control date-picker'
                 .col-md-6
                   .form-group
-                    = text_field_tag :date_to, '', placeholder: 'to', class: 'form-control date-picker'
+                    = text_field_tag 'q[date_to]', @query['date_to'], placeholder: 'to (optional)', class: 'form-control date-picker'
             .row
             .col-md-12
               .form-group.text-center
