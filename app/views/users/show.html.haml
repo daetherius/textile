@@ -4,26 +4,32 @@
       %ul.nav.navbar-nav
         %li= back_link_to users_path
         %li= link_to 'Edit', edit_user_path(@user)
+
 .row
-  .col-md-5.col-md-push-1
-    %h2 User ##{@user.id}
-    %table.table.table-responsive
-      %tbody
-        %tr
-          %th First name
-          %td= @user.first_name
-        %tr
-          %th Last name:
-          %td= @user.last_name
-        %tr
-          %th Email:
-          %td= @user.email
-        %tr
-          %th Date of birth:
-          %td= @user.date_of_birth
-        %tr
-          %td.text-center{colspan: 2}
-            = @user.get_barcode_data.html_safe
-            %p= @user.barcode
+  .col-md-12
+    .page-header
+      %h1 User ##{@user.id}
+
+.row
+  .col-md-6
+    .panel.panel-default
+      %table.table.table-responsive
+        %tbody
+          %tr
+            %th First name
+            %td= @user.first_name
+          %tr
+            %th Last name:
+            %td= @user.last_name
+          %tr
+            %th Email:
+            %td= @user.email
+          %tr
+            %th Date of birth:
+            %td= @user.date_of_birth
+          %tr
+            %td.text-center{colspan: 2}
+              = @user.get_barcode_data.html_safe
+              %p= @user.barcode
 
 

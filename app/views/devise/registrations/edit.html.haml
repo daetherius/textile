@@ -5,8 +5,12 @@
         %li= back_link_to
 
 .row
-  .col-md-5.col-md-push-1
-    %h2 Edit #{resource_name.to_s.humanize}
+  .col-md-12
+    .page-header
+      %h1 Edit #{resource_name.to_s.humanize}
+
+.row
+  .col-md-6
     = form_for(resource, as: resource_name, url: update_user_registration_path, html: { method: :put }) do |f|
       = devise_error_messages!
 

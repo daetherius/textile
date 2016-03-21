@@ -6,7 +6,11 @@
         %li= link_to 'Show', @user
 
 .row
-  .col-md-5.col-md-push-1
-    %h1 Editing user ##{@user.id}
+  .col-md-12
+    .page-header
+      %h1 Editing user ##{@user.id}
+
+.row
+  .col-md-6
 
     = render 'form'

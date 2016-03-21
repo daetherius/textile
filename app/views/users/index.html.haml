@@ -6,37 +6,48 @@
         %li= link_to 'New User', new_user_path
 
 
-    %h1 Listing users
+    .page-header
+      %h1 Users
+
+    .panel.panel-default
+      .panel-body.pd-b2
+        %p.lead Filters
+        = form_tag({}, {class: 'form-inline'}) do
+          .form-group
+            = text_field_tag :user_id, '', class: 'typeahead'
+          .form-group
+            = submit_tag "Search"
 
 
-    %table.table
-      %thead
-        %tr
-          %th First name
-          %th Last name
-          %th Email
-          %th.text-center Date of birth
-          %th.text-center Confirmed
-          %th.text-center Admin
-          %th
-          %th
-          %th
-
-      %tbody
-        - @users.each do |user|
+      %table.table
+        %thead
           %tr
-            %td= user.first_name
-            %td= user.last_name
-            %td= user.email
-            %td.text-center= user.date_of_birth
-            %td.text-center
-              %i.glyphicon{ class: "glyphicon glyphicon-#{user.confirmed? ? 'ok' : 'remove'}" }
-            %td.text-center
-              - if user.admin?
-                %i.glyphicon.glyphicon-ok
-            %td= link_to 'History', user_history_path(user)
-            %td= link_to 'Show', user
-            %td= link_to 'Edit', edit_user_path(user)
-            %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
+            %th First name
+            %th Last name
+            %th Email
+            %th.text-center Date of birth
+            %th.text-center Confirmed
+            %th.text-center Admin
+            %th
+            %th
+            %th
+            %th
+
+        %tbody
+          - @users.each do |user|
+            %tr
+              %td= user.first_name
+              %td= user.last_name
+              %td= user.email
+              %td.text-center= user.date_of_birth
+              %td.text-center
+                %i.glyphicon{ class: "glyphicon glyphicon-#{user.confirmed? ? 'ok' : 'remove'}" }
+              %td.text-center
+                - if user.admin?
+                  %i.glyphicon.glyphicon-ok
+              %td= link_to 'History', user_history_path(user)
+              %td= link_to 'Show', user
+              %td= link_to 'Edit', edit_user_path(user)
+              %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 

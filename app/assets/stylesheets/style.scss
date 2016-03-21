@@ -1,3 +1,10 @@
+.pd-b {
+  padding-bottom: 20px;
+}
+.pd-b2 {
+  padding-bottom: 40px;
+}
+
 .login-form-container {
   margin-top:120px;
 }
@@ -24,16 +31,31 @@ span.help-block {
   display: inline;
 }
 
-.history-table {
-  td, th {
+.history-detail {
+  .title {
     text-align: center;
+    margin-top: 0.5em;
+    margin-bottom: 0.8em;
   }
-  .checkin, .checkout {
+
+  .history-table {
+    td, th {
+      text-align: center;
+    }
+    .checkin, .checkout {
+    }
+    .delayed, .early {
+      background-color:#ffefcc;
+    }
+    .missed {
+      background-color:#ffe6e6;
+    }
   }
-  .delayed, .early {
-    background-color:#ffefcc;
-  }
-  .missed {
-    background-color:#ffe6e6;
+}
+
+.panel {
+  table > thead > tr > th {
+    border-bottom: 0;
+    background-color: #f9f9f9;
   }
 }
