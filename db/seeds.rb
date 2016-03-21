@@ -4,7 +4,7 @@ admin = User.create(first_name: 'Admin', last_name: '', email: 'admin@textile.co
 admin.confirm!
 
 # Create employees
-if ENV['WITH_SAMPLE_DATA']
+if ENV['SAMPLE_DATA']
   15.times do |n|
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
