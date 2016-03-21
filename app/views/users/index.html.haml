@@ -10,13 +10,43 @@
       %h1 Users
 
     .panel.panel-default
-      .panel-body.pd-b2
-        %p.lead Filters
-        = form_tag({}, {class: 'form-inline'}) do
-          .form-group
-            = text_field_tag :user_id, '', class: 'typeahead'
-          .form-group
-            = submit_tag "Search"
+      .panel-body
+        %p.lead Filter by
+        = form_tag({}, {class: ''}) do
+          .row
+            .col-md-2
+              .form-group
+                = label_tag :barcode, "Barcode"
+                = text_field_tag :barcode, '', class: 'form-control'
+            .col-md-1.or-cell
+              ="- or -"
+            .col-md-5
+              .row
+                .col-md-12
+                  = label_tag :with, "With"
+              .row
+                .col-md-6
+                  .form-group
+                    = select_tag :with, options_for_select(@filter_with_options), class: 'form-control'
+                .col-md-6
+                  .form-group
+                    = select_tag :check_type, options_for_select(@filter_check_types_options), class: 'form-control'
+
+            .col-md-4
+              .row
+                .col-md-12
+                  = label_tag :date_from, "Between dates"
+              .row
+                .col-md-6
+                  .form-group
+                    = text_field_tag :date_from, '', placeholder: 'From', class: 'form-control date-picker'
+                .col-md-6
+                  .form-group
+                    = text_field_tag :date_to, '', placeholder: 'to', class: 'form-control date-picker'
+            .row
+            .col-md-12
+              .form-group.text-center
+                = submit_tag "Search", class: 'btn btn-primary'
 
 
       %table.table

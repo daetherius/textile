@@ -59,6 +59,18 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    @filter_with_options = [
+      ["At least one","gt_0"],
+      ["More than one","gt_1"],
+      ["None", "none"],
+    ]
+    @filter_check_types_options = [
+      ["Delayed arrival","delayed"],
+      ["Early departure", "early"],
+      ["Missed day", "missed"],
+      ["Check-in", "checkin"],
+      ["Check-out", "checkout"],
+    ]
   end
 
   def show
