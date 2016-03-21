@@ -52,11 +52,13 @@
             .col-md-12
               .form-group.text-center
                 = submit_tag "Search", class: 'btn btn-primary'
+                = link_to 'Reset', users_path, class: 'btn btn-default' if @query.present?
 
 
       %table.table
         %thead
           %tr
+            %th Barcode
             %th First name
             %th Last name
             %th Email
@@ -71,6 +73,7 @@
         %tbody
           - @users.each do |user|
             %tr
+              %td= user.barcode
               %td= user.first_name
               %td= user.last_name
               %td= user.email

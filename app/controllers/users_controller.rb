@@ -76,7 +76,7 @@ class UsersController < ApplicationController
             now = Time.current.in_time_zone
             @query["date_from"] = (@query["date_from"] || now.ago(1.month)).to_date
             @query["date_to"] = (@query["date_to"] || now).to_date
-            days_between_dates = ((@query["date_to"] - @query["date_from"])/86400).to_i
+            days_between_dates = (@query["date_to"] - @query["date_from"]).to_i + 1
 
             filter_query = filter_query.where(["checks.created_at >= ?", @query["date_from"].beginning_of_day])
                                    .where(["checks.created_at <= ?", @query["date_to"].end_of_day])
@@ -106,9 +106,7 @@ class UsersController < ApplicationController
 
               if comparison
                 # We use days_between_dates-1 as pivot to compare
-                @users = User.where.not(
-                  id: filter_query.having(["count(checks.id) #{comparison} ?", days_between_dates - 1])
-                )
+                @users = filter_query.having(["count(checks.id) #{comparison} ?", days_between_dates - 1])
               end
 
             else # Other than missed
