@@ -9,13 +9,16 @@ class User < ActiveRecord::Base
 
   validates_presence_of :first_name, :email
   validates :password, confirmation: true
-  has_many :checks
+
   after_save :set_barcode, if: "barcode.nil?"
 
+  has_many :checks
   has_barcode :get_barcode,
               :outputter => :svg,
               :type => :code_128,
               :value => Proc.new { |p| p.barcode }
+
+  scope :employees, -> { where(admin: false) }
 
   def has_checked_at?(check_types, day = nil)
     checks.for_day(day).where(context: Check.values_for(*check_types)).any?
