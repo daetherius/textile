@@ -12,10 +12,10 @@ class User < ActiveRecord::Base
   has_many :checks
   after_save :set_barcode, if: "barcode.nil?"
 
-  has_barcode :barcode,
+  has_barcode :get_barcode,
               :outputter => :svg,
               :type => :code_128,
-              :value => Proc.new { |p| p[:barcode].to_s }
+              :value => Proc.new { |p| p.barcode }
 
   def has_checked_today?(*check_types)
     checks.for_today.where(context: Check.values_for(*check_types)).any?
@@ -55,4 +55,12 @@ class User < ActiveRecord::Base
       opts[:reset_password_token] = reset_password_token
       send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
     end
+
+  private
+
+  def set_barcode
+    new_barcode = "%06d%0#{BARCODE_SUFFIX_LENGTH}d" % [id, rand(10**BARCODE_SUFFIX_LENGTH)]
+    update_column(:barcode, new_barcode)
+  end
+
 end

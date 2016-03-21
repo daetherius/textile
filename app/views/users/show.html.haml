@@ -23,7 +23,7 @@
           %td= @user.date_of_birth
         %tr
           %td.text-center{colspan: 2}
-            = @user.barcode_data.html_safe
+            = @user.get_barcode_data.html_safe
             %p= @user.barcode
 
 
