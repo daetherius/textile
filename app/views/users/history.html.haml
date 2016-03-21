@@ -6,9 +6,11 @@
           %li= link_to 'Show User', @user
 
 
+.row
+  .col-md-9.col-md-push-1
     %h1 #{@user.full_name} history
 
-    %table.table
+    %table.table.history-table
       %thead
         %tr
           %th Month

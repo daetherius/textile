@@ -19,7 +19,7 @@ module ApplicationHelper
       # Defaults
       row_defaults = {
         month: nil,
-        day: { atts: {}, content: date.strftime("%d") },
+        day: { atts: {}, content: date.strftime("%a %d") },
         arrival: { atts: { class: 'missed' }, content: '–' },
         departure: { atts: { class: 'missed' }, content: '–' },
       }

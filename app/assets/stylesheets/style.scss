@@ -23,3 +23,17 @@
 span.help-block {
   display: inline;
 }
+
+.history-table {
+  td, th {
+    text-align: center;
+  }
+  .checkin, .checkout {
+  }
+  .delayed, .early {
+    background-color:#ffefcc;
+  }
+  .missed {
+    background-color:#ffe6e6;
+  }
+}

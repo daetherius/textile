@@ -17,16 +17,16 @@ class User < ActiveRecord::Base
               :type => :code_128,
               :value => Proc.new { |p| p.barcode }
 
-  def has_checked_today?(*check_types)
-    checks.for_today.where(context: Check.values_for(*check_types)).any?
+  def has_checked_at?(check_types, day = nil)
+    checks.for_day(day).where(context: Check.values_for(*check_types)).any?
   end
 
-  def has_checked_in_today?
-    has_checked_today?(:checkin, :delayed)
+  def has_checked_in_at?(day = nil)
+    has_checked_at?([:checkin, :delayed], day)
   end
 
-  def has_checked_out_today?
-    has_checked_today?(:checkout, :early)
+  def has_checked_out_at?(day = nil)
+    has_checked_at?([:checkout, :early], day)
   end
 
   def full_name

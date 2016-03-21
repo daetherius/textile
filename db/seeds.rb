@@ -5,7 +5,7 @@ admin.confirm!
 
 # Create employees
 if ENV['WITH_SAMPLE_DATA']
-  1000.times do |n|
+  15.times do |n|
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
     bday = Faker::Time.between(60.years.ago, 20.years.ago, :all)
@@ -22,10 +22,10 @@ if ENV['WITH_SAMPLE_DATA']
     employee.confirm
 
     # Create checks
-    7.times do |n| # For past 7 days
+    45.times do |n| # For past 45 days
       past_day = Time.current.in_time_zone.ago((n+1).days)
 
-      if rand > 0.2 # 10% probability of absence
+      if rand > 0.1 # 10% probability of absence
         # Variation from -5 min to +20 min from the (rounded) CHECKIN_LIMIT_TIME: 9 hrs
         variation = (-5*60..20*60).to_a.sample
         employee.checks.create({
