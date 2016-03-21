@@ -1,0 +1,27 @@
+.row
+  .col-md-12
+    - if current_user.admin?
+      %nav.navbar
+        %ul.nav.navbar-nav
+          %li= link_to 'Show User', @user
+
+
+    %h1 #{@user.full_name} history
+
+    %table.table
+      %thead
+        %tr
+          %th Month
+          %th Day
+          %th Arrival
+          %th Departure
+
+      %tbody
+        - check_printer(@checks, @period).each do |day_key, row|
+          %tr
+            - if row[:month].present?
+              %td{row[:month][:atts]}= row[:month][:content]
+            %td{row[:day][:atts]}= row[:day][:content]
+            %td{row[:arrival][:atts]}= row[:arrival][:content]
+            %td{row[:departure][:atts]}= row[:departure][:content]
+

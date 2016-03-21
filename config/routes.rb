@@ -24,9 +24,10 @@ Rails.application.routes.draw do
   end
 
   post "/check" => "users#check", format: true, constraints: { format: 'json' }
-  get '/reports' => 'users#reports'
 
-  resources :users
+  resources :users do
+    get 'history'
+  end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -29,9 +29,8 @@ class User < ActiveRecord::Base
     has_checked_today?(:checkout, :early)
   end
 
-  def set_barcode
-    barcode = "%06d%0#{BARCODE_SUFFIX_LENGTH}d" % [id, rand(10**BARCODE_SUFFIX_LENGTH)]
-    update_column(:barcode, barcode)
+  def full_name
+    first_name + (" #{last_name}" if last_name)
   end
 
   ## DeviseMailer overrides

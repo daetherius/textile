@@ -2,15 +2,37 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, except: [:check]
   before_action :require_admin, except: [:dashboard, :check]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action only: [:dashboard] do
+    if current_user.admin?
+      redirect_to(users_path)
+    end
+  end
 
   respond_to :json, only: [:check]
 
-  def reports
-
-  end
-
   def dashboard
     @checks = current_user.checks
+
+    render 'history'
+  end
+
+  def history
+    @user = User.find(params[:user_id])
+
+    if @user
+      user_checks = @user.checks.order(created_at: :asc)
+      user_checks = user_checks.where(context: Check.values_for(*params[:check_types])) if params[:check_types]
+
+      now = Time.current.in_time_zone
+      date_from = params[:date_from] || now.ago(2.months) # `false` or a default limit if needed, e.g. `now.ago(1.year)`
+      date_until = params[:date_until] || now
+
+      @checks = user_checks.where(created_at: date_from..date_until)
+      @period = (date_from.to_date..date_until.to_date).to_a.reverse
+
+    else
+      redirect_to dashboard_path, alert: "No user found"
+    end
   end
 
   def check
