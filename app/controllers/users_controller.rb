@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
     if is_review_day?
       now = Time.current.in_time_zone
-      @period = (now.ago(2.weeks).to_date..now.to_date).to_a.reverse
+      @period = (now.ago(TimeRules::REVIEW_PERIOD).to_date..now.to_date).to_a.reverse
       @checks = current_user.checks
     end
 
